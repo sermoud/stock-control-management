@@ -50,7 +50,7 @@ cd stock-control-management
 
 ### 2. Configurar o Backend
 
-1. Navegue até a pasta do backend: `cd backend`
+1. Navegue até a pasta do backend: `cd bff`
 2. Compile e execute o backend usando Maven:
    ```
    mvn spring-boot:run
@@ -58,7 +58,7 @@ cd stock-control-management
 
 ### 3. Configurar e Executar o Frontend
 
-1. Navegue até a pasta do frontend: `cd frontend`
+1. Navegue até a pasta do frontend: `cd web`
 2. Instale as dependências:
    ```
    npm install
