@@ -36,8 +36,6 @@ export interface Product {
   quantityInStock: number;
 }
 
-
-
 export interface StockMovementLogDTO {
   id: number;
   product: Product;
@@ -48,20 +46,6 @@ export interface StockMovementLogDTO {
 
 
 }
-
-
-
-export interface StockEntryWithOptionalProductCreationRequest {
-  productId?: number;
-  quantity: number;
-  transactionValue: number;
-  createNewProduct: boolean;
-  newProductCode?: string;
-  newProductDescription?: string;
-  newProductType?: ProductType;
-  newProductSupplierValue?: number;
-}
-
 
 export enum ProductType {
   ELECTRONIC = 'ELECTRONIC',
