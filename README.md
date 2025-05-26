@@ -55,6 +55,7 @@ cd stock-control-management
    ```
    mvn spring-boot:run
    ```
+3. O swagger da aplicação estará disponível em: `http://localhost:8080/swagger-ui/index.html`
 
 ### 3. Configurar e Executar o Frontend
 
