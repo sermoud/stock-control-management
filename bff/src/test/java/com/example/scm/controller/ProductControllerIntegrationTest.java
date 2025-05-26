@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.scm.controller;
 
 import com.example.scm.entity.Product;
 import com.example.scm.enums.ProductType;

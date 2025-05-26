@@ -23,7 +23,6 @@ public class ProductQueryService {
     private final ProductRepository productRepository;
     private final StockChangeRepository stockChangeRepository;
 
-    @Autowired
     public ProductQueryService(ProductRepository productRepository, StockChangeRepository stockChangeRepository) {
         this.productRepository = productRepository;
         this.stockChangeRepository = stockChangeRepository;
@@ -70,9 +69,9 @@ public class ProductQueryService {
                     product.getCode(),
                     product.getDescription(),
                     totalQuantitySold,
+                    totalProfit,
                     totalSaleValueFromExits,
-                    totalSupplierCostForSoldItems, 
-                    totalProfit);
+                    totalSupplierCostForSoldItems);
         }).collect(Collectors.toList());
     }
 }

@@ -22,7 +22,6 @@ public class StockService {
     private final ProductRepository productRepository;
     private final StockChangeRepository stockChangeRepository;
 
-    @Autowired
     public StockService(ProductRepository productRepository, StockChangeRepository stockChangeRepository) {
         this.productRepository = productRepository;
         this.stockChangeRepository = stockChangeRepository;
