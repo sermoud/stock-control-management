@@ -1,0 +1,73 @@
+<div class="container mat-elevation-z8">
+  <div class="header-controls">
+    <h2>Gerenciamento de Produtos</h2>
+    <button mat-raised-button color="primary" (click)="openProductDialog()">
+      <mat-icon>add</mat-icon> Novo Produto
+    </button>
+  </div>
+
+  <mat-form-field appearance="standard" class="full-width filter-field">
+    <mat-label>Filtrar Produtos</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Dell XPS">
+  </mat-form-field>
+
+  <div class="loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+  <div class="error-message" *ngIf="errorLoadingData && !isLoadingResults">
+    Erro ao carregar os produtos. Por favor, tente novamente.
+  </div>
+
+  <div class="table-container" [hidden]="isLoadingResults || errorLoadingData">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+      <ng-container matColumnDef="code">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Código </th>
+        <td mat-cell *matCellDef="let product"> {{product.code}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Descrição </th>
+        <td mat-cell *matCellDef="let product"> {{product.description}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="productType">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
+        <td mat-cell *matCellDef="let product"> {{product.productType}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="supplierValue">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Valor Fornecedor </th>
+        <td mat-cell *matCellDef="let product"> {{product.supplierValue | currency:'BRL'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="quantityInStock">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Estoque </th>
+        <td mat-cell *matCellDef="let product"> {{product.quantityInStock}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Ações </th>
+        <td mat-cell *matCellDef="let product">
+          <button mat-icon-button color="primary" (click)="openProductDialog(product)" aria-label="Editar produto">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteProduct(product.id)" aria-label="Excluir produto">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" [attr.colspan]="displayedColumns.length" *ngIf="dataSource.filter && dataSource.filteredData.length === 0">Nenhum produto encontrado para "{{dataSource.filter}}"</td>
+        <td class="mat-cell" [attr.colspan]="displayedColumns.length" *ngIf="!dataSource.filter && dataSource.data.length === 0 && !isLoadingResults && !errorLoadingData">Nenhum produto cadastrado.</td>
+      </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons aria-label="Selecione a página de produtos">
+    </mat-paginator>
+  </div>
+</div>

@@ -1,0 +1,53 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Editar Produto' : 'Criar Novo Produto' }}</h2>
+<mat-dialog-content [formGroup]="productForm">
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Código do Produto</mat-label>
+    <input matInput formControlName="code" required>
+    <mat-error *ngIf="productForm.get('code')?.hasError('required')">Código é obrigatório.</mat-error>
+    <mat-error *ngIf="productForm.get('code')?.hasError('minlength')">Mínimo 3 caracteres.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Descrição</mat-label>
+    <textarea matInput formControlName="description" required></textarea>
+    <mat-error *ngIf="productForm.get('description')?.hasError('required')">Descrição é obrigatória.</mat-error>
+    <mat-error *ngIf="productForm.get('description')?.hasError('minlength')">Mínimo 5 caracteres.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Tipo de Produto</mat-label>
+    <mat-select formControlName="productType" required>
+      <mat-option *ngFor="let type of productTypes" [value]="type">{{ type }}</mat-option>
+    </mat-select>
+    <mat-error *ngIf="productForm.get('productType')?.hasError('required')">Tipo é obrigatório.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Valor do Fornecedor (R$)</mat-label>
+    <input matInput type="number" formControlName="supplierValue" required min="0.01">
+    <mat-error *ngIf="productForm.get('supplierValue')?.hasError('required')">Valor do fornecedor é obrigatório.</mat-error>
+    <mat-error *ngIf="productForm.get('supplierValue')?.hasError('min')">Valor deve ser positivo.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="isEditMode" appearance="fill" class="full-width">
+    <mat-label>Quantidade em Estoque</mat-label>
+    <input matInput type="number" formControlName="quantityInStock" readonly>
+  </mat-form-field>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="productForm.invalid">
+    {{ isEditMode ? 'Salvar Alterações' : 'Criar Produto' }}
+  </button>
+</mat-dialog-actions>
+
+<style>
+  .full-width {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  mat-dialog-content {
+    min-width: 300px;
+  }
+</style>

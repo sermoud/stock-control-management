@@ -1,0 +1,143 @@
+<div style="margin: 20px">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Lucratividade dos Produtos</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field
+        appearance="standard"
+        style="width: 100%; margin-bottom: 16px"
+      >
+        <mat-label>Filtrar produtos</mat-label>
+        <input
+          matInput
+          (keyup)="applyFilter($event)"
+          placeholder="Ex. Camiseta"
+          #input
+        />
+        <button
+          *ngIf="input.value"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="clearInputAndFilter(input)"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <div class="loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner></mat-spinner>
+      </div>
+
+      <div class="error-message" *ngIf="errorLoadingData && !isLoadingResults">
+        <mat-icon color="warn">error_outline</mat-icon>
+        <span
+          >Ocorreu um erro ao carregar os dados. Por favor, tente novamente mais
+          tarde.</span
+        >
+        <button
+          mat-stroked-button
+          color="primary"
+          (click)="loadProductProfits()"
+          style="margin-left: 16px"
+        >
+          <mat-icon>refresh</mat-icon> Tentar Novamente
+        </button>
+      </div>
+
+      <div
+        class="mat-elevation-z8"
+        [hidden]="isLoadingResults || errorLoadingData"
+      >
+        <table
+          mat-table
+          [dataSource]="dataSource"
+          matSort
+          class="mat-elevation-z8"
+          style="width: 100%"
+        >
+          <ng-container matColumnDef="productCode">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Código do Produto
+            </th>
+            <td mat-cell *matCellDef="let item">{{ item.productCode }}</td>
+          </ng-container>
+          <ng-container matColumnDef="productDescription">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Descrição</th>
+            <td mat-cell *matCellDef="let item">
+              {{ item.productDescription }}
+            </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="totalQuantitySold">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Qtd. Vendida
+            </th>
+            <td mat-cell *matCellDef="let item" style="text-align: center">
+              {{ item.totalQuantitySold }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="totalSaleValue">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Receita Total (R$)
+            </th>
+            <td mat-cell *matCellDef="let item" style="text-align: right">
+              {{ item.totalSaleValue | currency : "BRL" }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="totalSupplierCost">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Custo Fornecedor Total (R$)
+            </th>
+            <td mat-cell *matCellDef="let item" style="text-align: right">
+              {{ item.totalSupplierCost | currency : "BRL" }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="totalProfit">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Lucro total (R$)
+            </th>
+            <td mat-cell *matCellDef="let item" style="text-align: right;">
+              {{ item.totalProfit | currency : "BRL" }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Ações</th>
+            <td mat-cell *matCellDef="let item">
+              <button
+                mat-icon-button
+                color="primary"
+                (click)="viewDetails(item)"
+                aria-label="Ver detalhes do produto"
+              >
+                <mat-icon>visibility</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+              Nenhum dado encontrado para "{{ input.value }}"
+            </td>
+          </tr>
+        </table>
+
+        <mat-paginator
+          [pageSizeOptions]="[5, 10, 20]"
+          showFirstLastButtons
+          aria-label="Selecione a página de produtos"
+        >
+        </mat-paginator>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,122 @@
+<div class="stock-movement-forms-container">
+  <mat-card class="form-card">
+    <mat-card-header>
+      <mat-card-title>Registrar Entrada de Produto</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form (ngSubmit)="handleStockEntry()" #entryForm="ngForm">
+        <mat-form-field appearance="fill">
+          <mat-label>ID do Produto (Entrada)</mat-label>
+          <input matInput type="number" name="entryProductId" [(ngModel)]="entryRequest.productId" required>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Quantidade (Entrada)</mat-label>
+          <input matInput type="number" name="entryQuantity" [(ngModel)]="entryRequest.quantity" required min="1">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Valor Total Custo (Entrada)</mat-label>
+          <input matInput type="number" name="entryValue" [(ngModel)]="entryRequest.transactionValue" required min="0">
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!entryForm.form.valid || isLoadingEntry">
+          {{ isLoadingEntry ? 'Registrando...' : 'Registrar Entrada' }}
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="form-card">
+    <mat-card-header>
+      <mat-card-title>Registrar Saída de Produto</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form (ngSubmit)="handleStockExit()" #exitForm="ngForm">
+        <mat-form-field appearance="fill">
+          <mat-label>ID do Produto (Saída)</mat-label>
+          <input matInput type="number" name="exitProductId" [(ngModel)]="exitRequest.productId" required>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Quantidade (Saída)</mat-label>
+          <input matInput type="number" name="exitQuantity" [(ngModel)]="exitRequest.quantity" required min="1">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Valor Total Venda (Saída)</mat-label>
+          <input matInput type="number" name="exitValue" [(ngModel)]="exitRequest.transactionValue" required min="0">
+        </mat-form-field>
+        <button mat-raised-button color="accent" type="submit" [disabled]="!exitForm.form.valid || isLoadingExit">
+          {{ isLoadingExit ? 'Registrando...' : 'Registrar Saída' }}
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<hr class="section-divider">
+
+<div *ngIf="entryMessage || entryError || exitMessage || exitError" class="feedback-messages">
+  <div *ngIf="entryMessage" class="success-message">{{ entryMessage }}</div>
+  <div *ngIf="entryError" class="error-message">{{ entryError }}</div>
+  <div *ngIf="exitMessage" class="success-message">{{ exitMessage }}</div>
+  <div *ngIf="exitError" class="error-message">{{ exitError }}</div>
+</div>
+
+<h2>Histórico de Movimentações</h2>
+
+<div class="container mat-elevation-z8">
+  <div class="loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+  <div class="error-message" *ngIf="errorLoadingData && !isLoadingResults">
+    Erro ao carregar o histórico de movimentações. Por favor, tente novamente.
+  </div>
+
+  <div class="table-container" [hidden]="isLoadingResults || errorLoadingData">
+    <mat-form-field appearance="standard">
+      <mat-label>Filtrar</mat-label>
+      <input #inputFilter matInput (keyup)="applyFilter($event)" placeholder="Ex. Camiseta" />
+      <button mat-icon-button matSuffix *ngIf="inputFilter.value" (click)="clearInputAndFilter(inputFilter)" aria-label="Limpar filtro">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+      <ng-container matColumnDef="productDescription">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Produto </th>
+        <td mat-cell *matCellDef="let element"> {{element.product.description}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="changeType">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
+        <td mat-cell *matCellDef="let element" [ngClass]="{'entry-type': element.changeType === 'ENTRY', 'exit-type': element.changeType === 'EXIT'}">
+          {{element.changeType === 'ENTRY' ? 'ENTRADA' : 'SAÍDA'}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="movedQuantity">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantidade </th>
+        <td mat-cell *matCellDef="let element"> {{element.movedQuantity}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="saleValue">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Valor Trans. </th>
+        <td mat-cell *matCellDef="let element"> {{element.saleValue | currency:'BRL'}} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="saleDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Data </th>
+        <td mat-cell *matCellDef="let element"> {{element.saleDate | date:'dd/MM/yyyy HH:mm'}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" [attr.colspan]="displayedColumns.length" *ngIf="inputFilter.value && dataSource.filteredData.length === 0">Nenhum dado encontrado para "{{inputFilter.value}}"</td>
+        <td class="mat-cell" [attr.colspan]="displayedColumns.length" *ngIf="!inputFilter.value && dataSource.data.length === 0 && !isLoadingResults && !errorLoadingData">Nenhum histórico de movimentação disponível.</td>
+      </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Selecione a página de movimentações">
+    </mat-paginator>
+  </div>
+</div>

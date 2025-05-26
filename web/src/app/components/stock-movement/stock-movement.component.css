@@ -1,0 +1,48 @@
+.stock-movement-forms-container {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.form-card {
+  flex: 1 1 300px;
+  min-width: 280px;
+}
+
+.form-card mat-form-field {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.form-card mat-slide-toggle {
+  margin-bottom: 15px;
+}
+.new-product-fields {
+  border: 1px dashed;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+
+.container {
+  margin: 20px;
+  position: relative;
+.entry-type {
+  color: green;
+  font-weight: bold;
+}
+}
+
+.exit-type {
+  color: red;
+  font-weight: bold;
+}
+
+.success-message { color: green; margin-top: 10px; font-size: 0.9em; }
+.error-message { color: red; margin-top: 10px; font-size: 0.9em; }
+
+.section-divider {
+  margin-top: 30px;
+  margin-bottom: 20px;
+}

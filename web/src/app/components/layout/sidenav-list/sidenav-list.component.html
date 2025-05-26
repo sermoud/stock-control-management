@@ -1,0 +1,24 @@
+<mat-nav-list>
+  <h3 matSubheader>Navegação</h3>
+  <a mat-list-item routerLink="/" (click)="onSidenavClose()" routerLinkActive="active-list-item" [routerLinkActiveOptions]="{exact: true}">
+    <mat-icon matListItemIcon>home</mat-icon>
+    <span matListItemTitle>Início</span>
+  </a>
+  <a mat-list-item routerLink="/profitability" (click)="onSidenavClose()" routerLinkActive="active-list-item">
+    <mat-icon matListItemIcon>insights</mat-icon>
+    <span matListItemTitle>Lucratividade</span>
+  </a>
+  <a mat-list-item routerLink="/stockMovements" (click)="onSidenavClose()" routerLinkActive="active-list-item">
+    <mat-icon matListItemIcon>sync_alt</mat-icon>
+    <span matListItemTitle>Movimentações</span>
+  </a>
+  <a mat-list-item routerLink="/productTypeQuery" (click)="onSidenavClose()" routerLinkActive="active-list-item">
+    <mat-icon matListItemIcon>category</mat-icon>
+    <span matListItemTitle>Consulta por Tipo</span>
+  </a>
+  <a mat-list-item routerLink="/productManagement" (click)="onSidenavClose()" routerLinkActive="active-list-item">
+    <mat-icon matListItemIcon>category</mat-icon>
+    <span matListItemTitle>Criação de Produtos</span>
+  </a>
+  <mat-divider></mat-divider>
+</mat-nav-list>

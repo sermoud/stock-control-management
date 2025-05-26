@@ -1,0 +1,44 @@
+.container {
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 1200px;
+  position: relative;
+}
+
+.header-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header-controls h2 {
+  margin: 0;
+}
+
+.filter-field.full-width {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.7);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+}
